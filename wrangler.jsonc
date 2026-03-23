@@ -1,0 +1,8 @@
+{
+  "name": "cfw-readability-and-article-extraction-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2024-03-01",
+  "observability": {
+    "enabled": true
+  }, "kv_namespaces": [ { "binding": "KV", "id": "placeholder" } ]
+}
