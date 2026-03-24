@@ -69,3 +69,19 @@ curl -X GET "http://localhost:8787/v1/readability?url=" \
 ## Response Shape
 - **Success**: `{ ok: true, data: {...}, meta: {...}, request_id: "..." }`
 - **Error**: `{ ok: false, error: { code: "...", message: "..." }, request_id: "..." }`
+
+## Infrastructure Setup
+
+Run these commands to initialize the required Cloudflare resources:
+
+```bash
+# 1. Create KV Namespace (Note the ID from the output)
+wrangler kv:namespace create "KV"
+
+# 3. Set Secrets
+wrangler secret put API_KEY_SECRET
+
+```
+
+> **Note:** After creating KV/R2, update the `id` fields in `wrangler.jsonc` with the IDs provided by the command output.
+
