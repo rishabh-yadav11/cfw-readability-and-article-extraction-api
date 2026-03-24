@@ -5,21 +5,26 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy --minify",
-    "test": "vitest run",
+    "test": "vitest run src test tests",
     "lint": "eslint .",
     "format": "prettier --write .",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@mozilla/readability": "^0.6.0",
     "hono": "^4.0.0",
+    "linkedom": "^0.18.12",
     "zod": "^3.22.0"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240000.0",
-    "wrangler": "^3.30.0",
-    "vitest": "^1.3.0",
+    "@types/mozilla-readability": "^0.2.1",
+    "@typescript-eslint/eslint-plugin": "^8.57.2",
+    "@typescript-eslint/parser": "^8.57.2",
     "eslint": "^8.56.0",
     "prettier": "^3.2.0",
-    "typescript": "^5.3.0"
+    "typescript": "^5.3.0",
+    "vitest": "^1.3.0",
+    "wrangler": "^3.30.0"
   }
 }
