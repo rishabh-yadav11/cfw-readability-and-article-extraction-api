@@ -1,87 +1,42 @@
-# Readability and Article Extraction API
+# Article Extraction & Content Clean
 
-## Product Summary
-Turn article-like pages into clean JSON with headline, author, publish date, text, excerpt, reading time, and main image.
+> **News / Data** | High-performance API powered by Cloudflare Workers.
 
-## Route List
-- GET /v1/readability?url=
-- GET /v1/article?url=
-- POST /v1/readability/batch
-- scopes: article:read
-- ssrf_guard: strict
-- fetch_caps: 3MB body, 5 redirects, 8s timeout
-- cache_ttl: 24h
-- happy_path: GET /v1/readability?url=https://news.example/story returns cleaned text
-- non_article_page: returns low confidence score, not 500
-- blocked_target: private IP URL returns 400
+## Description
+Turn messy web pages into clean, structured JSON. Extract author, publish date, main image, and clean text.
 
-## Auth Model
-- **Type**: API Key (Bearer Token)
-- **Header**: `Authorization: Bearer <api_key>`
-- **Storage**: Hashed storage in Cloudflare KV
-- **Advanced**: HMAC Signature required for write routes (X-Timestamp, X-Nonce, X-Signature)
+This API is designed for high-scale applications requiring low latency and robust security. It is fully integrated with RapidAPI for seamless billing and key management.
 
-## Rate Limit Model
-- **Model**: Token Bucket (per API Key and per IP)
-- **Free Plan**: 60 req/min, 5000/day
-- **Pro Plan**: 300 req/min, 100,000/day
-- **Headers**: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`
+## Key Features
+- **Global Low Latency**: Deployed on Cloudflare's global edge network.
+- **Enterprise Security**: Built-in SSRF protection and strict input validation.
+- **Developer First**: Structured JSON responses and clear error codes.
+- **RapidAPI Ready**: No custom auth logic required; simply use your RapidAPI Key.
 
-## Required Cloudflare Bindings
-- **KV**: Used for API key metadata, rate limiting, and asset storage.
+## Authentication
+This API is exclusively available via **RapidAPI**. 
+1. Subscribe to a plan on the RapidAPI Marketplace.
+2. Include the following headers in your requests:
+   - `X-RapidAPI-Key`: Your unique RapidAPI Subscription Key.
+   - `X-RapidAPI-Host`: The host assigned by RapidAPI.
 
-## Local Setup
-```bash
-npm install
-cp .env.example .env
-npm run dev
+## API Endpoints
+- GET /v1/readability?url=\n- GET /v1/article?url=\n- POST /v1/readability/batch
+
+## Implementation Details
+- **Technology**: TypeScript / Hono / Cloudflare Workers
+- **Database**: Cloudflare D1 (SQL) for usage tracking
+- **Response Format**: JSON
+- **Rate Limits**: Managed by your RapidAPI plan (Basic, Pro, Ultra)
+
+## Standard Response Shape
+```json
+{
+  "ok": true,
+  "data": { ... },
+  "request_id": "req_..."
+}
 ```
 
-## Test Commands
-```bash
-npm test        # Run Vitest
-npm run lint    # Run ESLint
-npm run typecheck # Run TSC
-```
-
-## Deploy Steps
-```bash
-# 1. Create KV/R2 namespaces in Cloudflare
-# 2. Update wrangler.jsonc with namespace IDs
-# 3. Add secrets
-wrangler secret put API_KEY_SECRET
-# 4. Deploy
-npm run deploy
-```
-
-## Security Notes
-- **SSRF Guard**: Strict blocking of private/local IP ranges on all URL-fetching routes.
-- **Request IDs**: `X-Request-Id` included in every response for tracing.
-- **Strict Validation**: Zod-based input validation for all queries and bodies.
-- **Redaction**: Automatic redaction of PII and secrets in logs.
-
-## Example Request
-```bash
-curl -X GET "http://localhost:8787/v1/readability?url=" \
-     -H "Authorization: Bearer YOUR_API_KEY"
-```
-
-## Response Shape
-- **Success**: `{ ok: true, data: {...}, meta: {...}, request_id: "..." }`
-- **Error**: `{ ok: false, error: { code: "...", message: "..." }, request_id: "..." }`
-
-## Infrastructure Setup
-
-Run these commands to initialize the required Cloudflare resources:
-
-```bash
-# 1. Create KV Namespace (Note the ID from the output)
-wrangler kv:namespace create "KV"
-
-# 3. Set Secrets
-wrangler secret put API_KEY_SECRET
-
-```
-
-> **Note:** After creating KV/R2, update the `id` fields in `wrangler.jsonc` with the IDs provided by the command output.
-
+---
+*Maintained by rishabh-yadav11. For custom enterprise deployments, contact us.*
