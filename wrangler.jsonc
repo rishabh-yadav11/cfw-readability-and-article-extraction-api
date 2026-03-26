@@ -4,5 +4,12 @@
   "compatibility_date": "2024-03-01",
   "observability": {
     "enabled": true
-  }, "kv_namespaces": [ { "binding": "KV", "id": "placeholder" } ]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "api-portfolio-db",
+      "database_id": "PASTE_YOUR_D1_DATABASE_ID_HERE"
+    }
+  ], "kv_namespaces": [ { "binding": "KV", "id": "PASTE_CACHE_KV_ID_HERE" } ]
 }
